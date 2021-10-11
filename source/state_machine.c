@@ -11,8 +11,10 @@
 
 extern char state;
 int touch_val;
-//extern static enum  {stop, go, warning, crosswalk, transition} next_state;
-
+int reset_timer_flag;
+int on_off_cycle;
+int count_loop;
+int touch_event;
 
 uint8_t stop_color[3] = {97, 30, 60};
 uint8_t go_color[3] = {34, 150, 34};
@@ -27,10 +29,7 @@ int g_final_green;
 int g_initial_blue;
 int g_final_blue;
 
-int reset_timer_flag;
-int on_off_cycle;
-int count_loop;
-int touch_event;
+
 
 void stop_state()
 {
@@ -233,7 +232,7 @@ void crosswalk_state()
 		reset_timer();
 		on_off_cycle = 0;
 		count_loop = 0;
-		PRINTF("Inside the RESET LOOP in CROSSWALK\n\r");
+		//PRINTF("Inside the RESET LOOP in CROSSWALK\n\r");
 	}
 
 	//reset_timer();
@@ -293,15 +292,20 @@ void transition()
 	reset_timer_flag = 1;
 
   	float time = get_timer();
+  	float prev_time= get_timer();
 
 
-	if(time<= 100) //TRANSITION OVER 1 SECOND DELAY POLL EVERY 10MS
+	while(time<= 100) //TRANSITION OVER 1 SECOND DELAY POLL EVERY 10MS
 	{
-		final_red = (g_initial_red - g_final_red)*(int)time/100+g_initial_red;
-		final_green = (g_initial_green - g_final_green)*(int)time/100+g_initial_green;
-		final_blue = (g_initial_blue - g_final_blue)*(int)time/100+g_initial_blue;
-		//SET CURRENT COLOUR BY SETTING PROPER DUTY CYCLES
-		set_RGB_LED(final_red, final_green, final_blue);
+		if(time - prev_time > 6.3)
+		{
+			prev_time = time;
+			final_red = (g_initial_red - g_final_red)*(int)time/100+g_initial_red;
+			final_green = (g_initial_green - g_final_green)*(int)time/100+g_initial_green;
+			final_blue = (g_initial_blue - g_final_blue)*(int)time/100+g_initial_blue;
+			//SET CURRENT COLOUR BY SETTING PROPER DUTY CYCLES
+			set_RGB_LED(final_red, final_green, final_blue);
+		}
 		//PRINTF("Transition state\n\r");
 		time = get_timer();
 	}
@@ -309,6 +313,7 @@ void transition()
 	if (time > 100)
 	{
 		reset_timer_flag = 0;
+		//PRINTF("TRANSITION 1s \n\r");
 	}
 
 
