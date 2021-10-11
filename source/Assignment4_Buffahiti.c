@@ -46,6 +46,7 @@
 #include "state_machine.h"
 #include "led.h"
 #include "Timer.h"
+#include "log.h"
 /* TODO: insert other definitions and declarations here. */
 volatile char state;
 
@@ -63,7 +64,7 @@ int main(void) {
     BOARD_InitDebugConsole();
 #endif
 
-    PRINTF("Hello World\n\r");
+    LOG("Hello World\n\r");
 
     init_systick();
     Touch_Init();

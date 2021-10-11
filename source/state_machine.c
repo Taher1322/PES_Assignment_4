@@ -1,12 +1,43 @@
-/*
- * state_machine.c
- *
- *  Created on: Oct 9, 2021
- *      Author: ujjai
- */
+/*****************************************************************************
+* Copyright (C) 2021 by Taher Ujjainwala
+*
+* Redistribution, modification or use of this software in source or binary
+* forms is permitted as long as the files maintain this copyright. Users are
+* permitted to modify this and use it to learn about the field of embedded
+* software. Taher Ujjainwala and the University of Colorado are not liable for
+* any misuse of this material.
+*
+**************************************************************************/
 
+/*************************
+ *
+ *
+ *
+ *    File name   : state_machine.c
+ *    Description : This file Initialized the Slider and is called to read the value of the sliders
+ *
+ *    Author: TAHER S UJJAINWALA
+ * 	  Tools : MCUXpressor IDE
+ * 	  Reference: Alexander Dean
+ *
+ *    Date  : 10/10/2021
+ *
+ *
+ */
+//Including the Header files required for operation
+#include <stdio.h>
+#include "board.h"
+#include "peripherals.h"
+#include "pin_mux.h"
+#include "clock_config.h"
+#include "MKL25Z4.h"
+#include "fsl_debug_console.h"
+#include "TSI.h"
+#include "led.h"
+#include "pwm.h"
 #include "state_machine.h"
 #include "Timer.h"
+#include "log.h"
 
 
 extern char state;
@@ -16,11 +47,6 @@ int on_off_cycle;
 int count_loop;
 int touch_event;
 
-uint8_t stop_color[3] = {97, 30, 60};
-uint8_t go_color[3] = {34, 150, 34};
-uint8_t warning_color[3] = {255, 178, 0};
-uint8_t crosswalk_color[3] = {0, 16, 48};
-uint8_t crosswalk_off[3] = {0, 0, 0};
 
 int g_initial_red;
 int g_final_red;
@@ -43,9 +69,9 @@ void stop_state()
 
   	float time = get_timer();
 
-  	if (time <= 500)
+  	if (time <= stop_timeout)
   	{
-  		set_RGB_LED(stop_color[0], stop_color[1], stop_color[2]);
+  		set_RGB_LED(stop_red, stop_green, stop_blue);
 
   		if ((int)time%5 == 0)
   		{
@@ -61,32 +87,32 @@ void stop_state()
   		{
   			state = 'C';
   			reset_timer_flag = 0;
-  			g_initial_red = stop_color[0];
-  			g_final_red = crosswalk_color[0];
-  			g_initial_green = stop_color[1];
-  			g_final_green = crosswalk_color[1];
-  			g_initial_blue = stop_color[2];
-  			g_final_blue = crosswalk_color[2];
+  			g_initial_red = stop_red;
+  			g_final_red = crosswalk_red;
+  			g_initial_green = stop_green;
+  			g_final_green = crosswalk_green;
+  			g_initial_blue = stop_blue;
+  			g_final_blue = crosswalk_blue;
   			touch_event = 0;
-  			PRINTF("Slider Touched - Transition from STOP to CROSSWALK \n\r");
+  			LOG("Slider Touched - Transition from STOP to CROSSWALK \n\r");
   			transition();
   		}
 
-  		else if (time > 500)
+  		else if (time > stop_timeout)
   		{
   			state = 'G';
   			reset_timer_flag = 0;
-  			g_initial_red = stop_color[0];
-  			g_final_red = go_color[0];
-  			g_initial_green = stop_color[1];
-  			g_final_green = go_color[1];
-  			g_initial_blue = stop_color[2];
-  			g_final_blue = go_color[2];
-  			PRINTF("Transition from STOP to GO state\n\r");
+  			g_initial_red = stop_red;
+  			g_final_red = go_red;
+  			g_initial_green = stop_green;
+  			g_final_green = go_green;
+  			g_initial_blue = stop_blue;
+  			g_final_blue = go_blue;
+  			LOG("Transition from STOP to GO state\n\r");
   			transition();
   		}
 
-  		else if (time <= 500)
+  		else if (time <= stop_timeout)
   			state = 'S';
   	}
 
@@ -105,9 +131,9 @@ void go_state()
 
   	float time = get_timer();
 
-  	if (time <= 500)
+  	if (time <= go_timeout)
   	{
-  		set_RGB_LED(go_color[0], go_color[1], go_color[2]);
+  		set_RGB_LED(go_red, go_green, go_blue);
 
   		if ((int)time%5 == 0)
   		{
@@ -124,32 +150,32 @@ void go_state()
   		{
   			state = 'C';
   			reset_timer_flag = 0;
-  			g_initial_red = go_color[0];
-  			g_final_red = crosswalk_color[0];
-  			g_initial_green = go_color[1];
-  			g_final_green = crosswalk_color[1];
-  			g_initial_blue = go_color[2];
-  			g_final_blue = crosswalk_color[2];
+  			g_initial_red = go_red;
+  			g_final_red = crosswalk_red;
+  			g_initial_green = go_green;
+  			g_final_green = crosswalk_green;
+  			g_initial_blue = go_blue;
+  			g_final_blue = crosswalk_blue;
   			touch_event = 0;
-  			PRINTF("Slider Touched - Transition from GO to CROSSWALK \n\r");
+  			LOG("Slider Touched - Transition from GO to CROSSWALK \n\r");
   			transition();
   		}
 
-  		else if (time > 500)
+  		else if (time > go_timeout)
 		{
   			state = 'W';
   			reset_timer_flag = 0;
-  			g_initial_red = go_color[0];
-  			g_final_red = warning_color[0];
-  			g_initial_green = go_color[1];
-  			g_final_green = warning_color[1];
-  			g_initial_blue = go_color[2];
-  			g_final_blue = warning_color[2];
-  			PRINTF("Transition from GO to WARNING state\n\r");
+  			g_initial_red = go_red;
+  			g_final_red = warning_red;
+  			g_initial_green = go_green;
+  			g_final_green = warning_green;
+  			g_initial_blue = go_blue;
+  			g_final_blue = warning_blue;
+  			LOG("Transition from GO to WARNING state\n\r");
   			transition();
 		}
 
-  		else if (time <= 500)
+  		else if (time <= go_timeout)
   			state = 'G';
 
   	}
@@ -171,9 +197,9 @@ void warning_state()
 
   	float time = get_timer();
 
-  	if (time <= 300)
+  	if (time <= warning_timeout)
   	{
-  		set_RGB_LED(warning_color[0], warning_color[1], warning_color[2]);
+  		set_RGB_LED(warning_red, warning_green, warning_blue);
 
   		if ((int)time%5 == 0)
   		{
@@ -190,32 +216,32 @@ void warning_state()
   		{
   			state = 'C';
   			reset_timer_flag = 0;
-  			g_initial_red = warning_color[0];
-  			g_final_red = crosswalk_color[0];
-  			g_initial_green = warning_color[1];
-  			g_final_green = crosswalk_color[1];
-  			g_initial_blue = warning_color[2];
-  			g_final_blue = crosswalk_color[2];
+  			g_initial_red = warning_red;
+  			g_final_red = crosswalk_red;
+  			g_initial_green = warning_green;
+  			g_final_green = crosswalk_green;
+  			g_initial_blue = warning_blue;
+  			g_final_blue = crosswalk_blue;
   			touch_event = 0;
-  			PRINTF("Slider Touched - Transition from WARNING to CROSSWALK \n\r");
+  			LOG("Slider Touched - Transition from WARNING to CROSSWALK \n\r");
   			transition();
   		}
 
-  		else if (time > 300)
+  		else if (time > warning_timeout)
   		{
   			state = 'S';
   			reset_timer_flag = 0;
-  			g_initial_red = warning_color[0];
-  			g_final_red = stop_color[0];
-  			g_initial_green = warning_color[1];
-  			g_final_green = stop_color[1];
-  			g_initial_blue = warning_color[2];
-  			g_final_blue = stop_color[2];
-  			PRINTF("Transition from WARNING to STOP state\n\r");
+  			g_initial_red = warning_red;
+  			g_final_red = stop_red;
+  			g_initial_green = warning_green;
+  			g_final_green = stop_green;
+  			g_initial_blue = warning_blue;
+  			g_final_blue = stop_blue;
+  			LOG("Transition from WARNING to STOP state\n\r");
   			transition();
   		}
 
-  		else if (time <=300)
+  		else if (time <= warning_timeout)
   			state ='W';
   	}
 
@@ -240,15 +266,15 @@ void crosswalk_state()
 
   	float time = get_timer();
 
-  	if (time <= 1000)
+  	if (time <= crosswalk_timeout)
   	{
   		on_off_cycle = time - (count_loop * 100);
 
   		if (on_off_cycle <= 25)
-  			set_RGB_LED(crosswalk_off[0], crosswalk_off[1], crosswalk_off[2]);
+  			set_RGB_LED(led_off, led_off, led_off);
 
   		if((on_off_cycle <=100) && (on_off_cycle >25))
-  			set_RGB_LED(crosswalk_color[0], crosswalk_color[1], crosswalk_color[2]);
+  			set_RGB_LED(crosswalk_red, crosswalk_green, crosswalk_blue);
 
   		if (on_off_cycle >= 100)
   			count_loop++;
@@ -257,22 +283,22 @@ void crosswalk_state()
 
 
   		//time = get_timer();
-  		if (time > 1000)
+  		if (time > crosswalk_timeout)
   		{
   			state = 'G';
   			reset_timer_flag = 0;
-  			g_initial_red = crosswalk_color[0];
-  			g_final_red = go_color[0];
-  			g_initial_green = crosswalk_color[1];
-  			g_final_green = go_color[1];
-  			g_initial_blue = crosswalk_color[2];
-  			g_final_blue = go_color[2];
+  			g_initial_red = crosswalk_red;
+  			g_final_red = go_red;
+  			g_initial_green = crosswalk_green;
+  			g_final_green = go_green;
+  			g_initial_blue = crosswalk_blue;
+  			g_final_blue = go_blue;
   			//reset_timer();
-  			PRINTF("Transition from CROSSWALK to GO state\n\r");
+  			LOG("Transition from CROSSWALK to GO state\n\r");
   			transition();
   		}
 
-  		else if (time <= 1000)
+  		else if (time <= crosswalk_timeout)
   			state = 'C';
   	}
 
@@ -295,7 +321,7 @@ void transition()
   	float prev_time= get_timer();
 
 
-	while(time<= 100) //TRANSITION OVER 1 SECOND DELAY POLL EVERY 10MS
+	while(time<= transition_timeout) //TRANSITION OVER 1 SECOND DELAY POLL EVERY 10MS
 	{
 		if(time - prev_time > 6.3)
 		{
@@ -310,7 +336,7 @@ void transition()
 		time = get_timer();
 	}
 
-	if (time > 100)
+	if (time > transition_timeout)
 	{
 		reset_timer_flag = 0;
 		//PRINTF("TRANSITION 1s \n\r");
