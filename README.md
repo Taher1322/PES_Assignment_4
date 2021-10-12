@@ -7,16 +7,16 @@ Contact me if you are facing issue in execution of the code @ tauj5361@colorado.
 
 # BUFFAHITI TRAFFIC LIGHT </br> 
 
-# Project Comments
- This projects implements the following routine :
+# Project Comments </br>
+ This projects implements the following routine : </br>
 
-At program startup, Buffahiti Traffic Light  will run the LED by blinking in the following pattern:
-Initially it is in Stop state
-When the traffic light is in the STOP state, Buffahiti residents use the color #611E3C
-When the traffic light is in the GO state, Buffahiti residents use the color #229622
-When the traffic light is in the WARNING state, Buffahiti residents use the color #FFB200
-When someone presses the Button or Touch slider to cross the street (CROSSWALK state), the traffic light is blinking with the color #001030.
-In the CROSSWALK state, the light blinks 250 msec off, 750 msec on. No other mode has the light blinking.
+At program startup, Buffahiti Traffic Light  will run the LED by blinking in the following pattern: </br>
+Initially it is in Stop state </br>
+When the traffic light is in the STOP state, Buffahiti residents use the color #611E3C </br>
+When the traffic light is in the GO state, Buffahiti residents use the color #229622 </br>
+When the traffic light is in the WARNING state, Buffahiti residents use the color #FFB200 </br>
+When someone presses the Button or Touch slider to cross the street (CROSSWALK state), the traffic light is blinking with the color #001030. </br>
+In the CROSSWALK state, the light blinks 250 msec off, 750 msec on. No other mode has the light blinking. </br>
 
 
 # Developement Details </br>
@@ -32,18 +32,15 @@ Note:  Due to LOG messages in DEBUG mode - There is some time delay which makes 
 
 External GPIO interrupt for switch connection </br>
 
-1. PD3 is configured as external gpio input interrupt.
-2. It is also configured with internal pull up resistor. 
-3. Rough schematic is added to repository. 
+1. PD3 is configured as external gpio input interrupt. It is configured with internal pull up resistor. </br>
+2. Circuit diagram to connect button is added in this repository. </br>
 
 
 # State Machine Representation is added in this repository </br>
 
-PEER REVIEW 
+PEER REVIEW Performed with - Gaurang K Rane </br>
 
-Performed with - Gaurang K Rane
-
-Date & Time 10-11-2021  from 9:00 - 10:00 PM
+Date & Time 10-11-2021  from 9:00 - 10:00 PM </br>
 
 # Peer Feedbacks and Improvements </br>
 
@@ -58,10 +55,10 @@ In the debug mode - </br>
 
 # Feedback incorporation done in my Code after Peer Review </br>
 
-1. Smooth transition done.
-2. Debug comments added with Systick Time
-3. Readability and Elegance of the code improved 
-4. Followed professional coding standards for each files
+1. Smooth transition done. </br>
+2. Debug comments added with Systick Time. </br>
+3. Readability and Elegance of the code improved. </br> 
+4. Followed professional coding standards for each files. </br>
 
 
 
