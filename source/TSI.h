@@ -20,7 +20,7 @@
  *
  *    Author: TAHER S UJJAINWALA
  * 	  Tools : MCUXpressor IDE
- * 	  Reference: Alexander Dean
+ * 	  Reference: Alexander Dean TSI section
  *
  *    Date  : 10/10/2021
  *
@@ -29,6 +29,10 @@
 
 #ifndef TSI_H_
 #define TSI_H_
+
+#define TOUCH_OFFSET (550)  // offset value to be subtracted
+#define TOUCH_DATA (TSI0->DATA & 0xFFFF)//macro for extracting the count from data register
+#define TOUCH_THRESHOLD (80)			//Threshold values on touch event
 
 /*************************************************************************************************************
  *

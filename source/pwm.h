@@ -15,11 +15,11 @@
  *
  *
  *    File name   : pwm.h
- *    Description : This file contains all the functions declaration which are used in Timer.c to Implement Systick
+ *    Description : This file contains all the functions declaration which are used in pwm.c to PWM functions for RGB LED
  *
  *    Author: TAHER S UJJAINWALA
  * 	  Tools : MCUXpressor IDE
- * 	  Reference: Alexander Dean
+ * 	  Reference: Alexander Dean PWM section
  *
  *    Date  : 10/10/2021
  *
@@ -28,11 +28,11 @@
 #ifndef PWM_H_
 #define PWM_H_
 
-#define RED_LED_POS (18)
-#define GREEN_LED_POS (19)
-#define BLUE_LED_POS (1)
-#define PWM_PERIOD (48000)
-#define BRIGTHNESS (255)
+#define RED_LED_POS (18)					//Defining the RED led on Port B - Pin 18
+#define GREEN_LED_POS (19)					//Defining the GREEN led on Port B - Pin  19
+#define BLUE_LED_POS (1)					//Defining the BLUE led on Port D - Pin 1
+#define PWM_PERIOD (48000)					//Defining the PWM period
+#define BRIGTHNESS (255)					//PWM value for Max Brightness
 
 
 /*************************************************************************************************************

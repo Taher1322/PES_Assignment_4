@@ -15,10 +15,11 @@
  *
  *
  *    File name   : led.c
- *    Description : This file Initialized the Slider and is called to read the value of the sliders
+ *    Description : This file changes the Brightness of RGB led using PWM values (0-255)
  *
  *    Author: TAHER S UJJAINWALA
  * 	  Tools : MCUXpressor IDE
+ *	  Reference: Dean PWM section
  *
  *    Date  : 10/10/2021
  *

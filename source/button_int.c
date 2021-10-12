@@ -14,10 +14,13 @@
  *
  *
  *    File name   : button_int.c
- *    Description : This file contains all the functions declaration which are used
+ *    Description : This file contains functions which Initializes the GPIO as Interrupt, Defines IRQ Handles.
+ *    It also checks the button state and returns the flag value
+ *
  *
  *    Author: TAHER S UJJAINWALA
  * 	  Tools : MCUXpressor IDE
+ * 	  Reference: Howdy Class lectures and Dean GPIO Input Section
  *
  *    Date  : 10/11/2021
  *
@@ -27,8 +30,10 @@
 #include "MKL25Z4.h"
 #include "button_int.h"
 
-#define SWITCH_PIN (3)    //PTD3
+//Defines
+#define SWITCH_PIN (3)    //Port D - Pin 3 (PD3)
 
+//Defining the variable to read the press event
 volatile int button_pressed = 0;
 
 void Init_Switch()

@@ -1,2 +1,2 @@
-TSI.c:53:6:Touch_Init	0	static
-TSI.c:70:5:Touch_Scan_LH	0	static
+TSI.c:51:6:Touch_Init	0	static
+TSI.c:68:5:Touch_Scan_LH	0	static

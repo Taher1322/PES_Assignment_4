@@ -15,10 +15,12 @@
  *
  *
  *    File name   : state_machine.h
- *    Description : This file Initialized the Slider and is called to read the value of the sliders
+ *    Description : This file contains all the functions defined in state_machine.c which is used to implement the Buffahiti Traffic Lights
  *
  *    Author: TAHER S UJJAINWALA
  * 	  Tools : MCUXpressor IDE
+ * 	  Reference: Alexander Dean State Machine Implementation Section, Crafted Ideas with Gaurang Rane
+ * 	  Help from Mukta to get the transition working correctly
  *
  *    Date  : 10/10/2021
  *
@@ -31,22 +33,26 @@
 
 //************************************************DEFINES*********************************************
 
-#define stop_red 		(97)
-#define stop_green 		(30)
-#define stop_blue 		(60)
-#define go_red 			(34)
-#define go_green		(150)
-#define go_blue 		(34)
-#define warning_red 	(255)
-#define warning_green	(178)
-#define warning_blue 	(0)
-#define crosswalk_red	(0)
-#define crosswalk_green	(16)
-#define crosswalk_blue	(48)
-#define led_off			(0)
+#define stop_red 		(97)		//Defining Stop State RED PWM value
+#define stop_green 		(30)		//Defining Stop State GREEN PWM value
+#define stop_blue 		(60)		//Defining Stop State BLUE PWM value
+#define go_red 			(34)		//Defining Go State RED PWM value
+#define go_green		(150)		//Defining Go State GREEN PWM value
+#define go_blue 		(34)		//Defining Go State BLUE PWM value
+#define warning_red 	(255)		//Defining Warning State RED PWM value
+#define warning_green	(178)		//Defining Warning State GREEN PWM value
+#define warning_blue 	(0)			//Defining Warning State BLUE PWM value
+#define crosswalk_red	(0)			//Defining Crosswalk State RED PWM value
+#define crosswalk_green	(16)		//Defining Crosswalk State GREEN PWM value
+#define crosswalk_blue	(48)		//Defining Crosswalk State BLUE PWM value
+#define led_off			(0)			//Defining OFF PWM value
 
-#define delay_750ms     (100)
+//Defining values to handle 750ms ON and 250ms OFF delay in CROSSWALK STATE
+#define delay_1000ms  	(100)
+#define delay_750ms     (75)
 #define delay_250ms 	(25)
+
+#define smooth_trans    (6.3)		//Defining Transition Time for smooth color change
 
 #ifdef DEBUG
 #define stop_timeout			(500)    //Stop state timeout in DEBUG mode -->5 seconds

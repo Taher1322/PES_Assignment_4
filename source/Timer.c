@@ -15,11 +15,11 @@
  *
  *
  *    File name   : Timer.c
- *    Description : This file Initialized the Slider and is called to read the value of the sliders
+ *    Description : This file defines the functions to reset timer, start timer, get current time since start using Systick Timer
  *
  *    Author: TAHER S UJJAINWALA
  * 	  Tools : MCUXpressor IDE
- * 	  Reference: Alexander Dean
+ * 	  Reference: Howdy lectures and Alexander Dean Systick Timer section
  *
  *    Date  : 10/10/2021
  *
@@ -38,9 +38,9 @@
 #include "MKL25Z4.h"
 #include "fsl_debug_console.h"
 #include "core_cm0plus.h"
-
 #include "Timer.h"
 
+//Defining variables to read the time and reset the timer value
 volatile ticktime_t timer_start;
 volatile ticktime_t reset_tim_value;
 
@@ -55,27 +55,32 @@ void init_systick() 										// initialize the timing system
 }
 
 
+//Returns the time since boot
 ticktime_t now()
 {
 	return timer_start;
 }
 
+//Resets the timer to 0 without affecting the now() values
 void reset_timer()
 {
 	reset_tim_value = now();
 	init_systick();
 }
 
+//Returns Ticks since the last call to reset_timer()
 ticktime_t get_timer()
 {
 	return (timer_start - reset_tim_value);
 }
 
+//Timer interrupt that is called every 10ms
 void SysTick_Handler()
 {
 	timer_start++;
 }
 
+//Delay functions - Not used anywhere in code
 void delay(int count){
 	reset_timer();
 

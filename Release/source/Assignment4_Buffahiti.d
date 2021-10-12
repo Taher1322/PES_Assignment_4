@@ -21,7 +21,7 @@ source/Assignment4_Buffahiti.o source/Assignment4_Buffahiti.d: \
  C:\Users\ujjai\Documents\MCUXpressoIDE_11.2.0_4120\workspace\Assignment4_Buffahiti\utilities/fsl_debug_console.h \
  C:\Users\ujjai\Documents\MCUXpressoIDE_11.2.0_4120\workspace\Assignment4_Buffahiti\CMSIS/core_cm0plus.h \
  ../source/TSI.h ../source/pwm.h ../source/state_machine.h \
- ../source/led.h ../source/Timer.h ../source/log.h
+ ../source/led.h ../source/Timer.h ../source/log.h ../source/button_int.h
 
 C:\Users\ujjai\Documents\MCUXpressoIDE_11.2.0_4120\workspace\Assignment4_Buffahiti\board/board.h:
 
@@ -74,3 +74,5 @@ C:\Users\ujjai\Documents\MCUXpressoIDE_11.2.0_4120\workspace\Assignment4_Buffahi
 ../source/Timer.h:
 
 ../source/log.h:
+
+../source/button_int.h:

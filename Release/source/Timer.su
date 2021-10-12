@@ -1,6 +1,6 @@
 Timer.c:48:6:init_systick	0	static
-Timer.c:58:12:now	0	static
-Timer.c:63:6:reset_timer	8	static
-Timer.c:69:12:get_timer	0	static
-Timer.c:74:6:SysTick_Handler	0	static
-Timer.c:79:6:delay	8	static
+Timer.c:59:12:now	0	static
+Timer.c:65:6:reset_timer	8	static
+Timer.c:72:12:get_timer	0	static
+Timer.c:78:6:SysTick_Handler	0	static
+Timer.c:84:6:delay	8	static

@@ -19,6 +19,7 @@
  *
  *    Author: TAHER S UJJAINWALA
  * 	  Tools : MCUXpressor IDE
+ * 	  Reference: Howdy Class lectures and Dean GPIO Input Section
  *
  *    Date  : 10/11/2021
  *

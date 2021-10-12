@@ -47,6 +47,7 @@
 #include "led.h"
 #include "Timer.h"
 #include "log.h"
+#include "button_int.h"
 /* TODO: insert other definitions and declarations here. */
 volatile char state;
 
@@ -64,17 +65,24 @@ int main(void) {
     BOARD_InitDebugConsole();
 #endif
 
-    LOG("Hello World\n\r");
-
+    //Initializing the Timer
     init_systick();
+
+    //Initializing the Touch Slider
     Touch_Init();
+
+    //Initializing the PWM Functions for Red, Green and Blue
     Init_Red_LED_PWM(BRIGTHNESS);
     Init_Green_LED_PWM(BRIGTHNESS);
     Init_Blue_LED_PWM(BRIGTHNESS);
 
+    //Initializing the Switch as Interrupt on PD3
+    Init_Switch();
 
+    //Starting the state machine with Stop State - Initial State
     state = 'S';
     /* Enter an infinite loop, just incrementing a counter. */
+    LOG("Entering State Machine Loop\n\r");
     while(1) {
      	switch(state)
         	{

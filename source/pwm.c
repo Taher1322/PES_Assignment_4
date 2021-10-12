@@ -15,11 +15,12 @@
  *
  *
  *    File name   : pwm.c
- *    Description : This file contains all the functions declaration which are used in Timer.c to Implement Systick
+ *    Description : This file contains all the functions declaration which are used to defined the GPIO to be used as PWM
+ *    Defined clock, Port Mux pin, Timer load value, Clock Prescaler, Mask and Initial duty cycle
  *
  *    Author: TAHER S UJJAINWALA
  * 	  Tools : MCUXpressor IDE
- * 	  Reference: Alexander Dean
+ * 	  Reference: Alexander Dean PWM section
  *
  *    Date  : 10/10/2021
  *

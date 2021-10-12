@@ -1,6 +1,6 @@
 core_cm0plus.h:745:22:NVIC_EnableIRQ	16	static
 core_cm0plus.h:756:22:NVIC_DisableIRQ	16	static
 core_cm0plus.h:804:22:NVIC_SetPriority	24	static
-button_int.c:34:6:Init_Switch	8	static
-button_int.c:62:6:PORTD_IRQHandler	8	static
-button_int.c:70:5:check_switch_pressed	16	static
+button_int.c:39:6:Init_Switch	8	static
+button_int.c:67:6:PORTD_IRQHandler	8	static
+button_int.c:75:5:check_switch_pressed	16	static

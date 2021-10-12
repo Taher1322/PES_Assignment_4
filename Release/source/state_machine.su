@@ -1,5 +1,5 @@
-state_machine.c:310:6:transition	32	static
-state_machine.c:62:6:stop_state	16	static
-state_machine.c:124:6:go_state	16	static
-state_machine.c:188:6:warning_state	16	static
+state_machine.c:303:6:transition	40	static
+state_machine.c:65:6:stop_state	16	static
+state_machine.c:127:6:go_state	16	static
+state_machine.c:191:6:warning_state	16	static
 state_machine.c:254:6:crosswalk_state	24	static

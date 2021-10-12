@@ -19,7 +19,7 @@
  *
  *    Author: TAHER S UJJAINWALA
  * 	  Tools : MCUXpressor IDE
- * 	  Reference: Alexander Dean
+ * 	  Reference: Alexander Dean TSI section
  *
  *    Date  : 10/10/2021
  *
@@ -34,14 +34,12 @@
 #include "MKL25Z4.h"
 #include "fsl_debug_console.h"
 #include "led.h"
+#include "TSI.h"
 /* TODO: insert other include files here. */
 
 /* TODO: insert other definitions and declarations here. */
 //variation of the capacitance from 50 to 2500
 
-#define TOUCH_OFFSET (550)  // offset value to be subtracted
-#define TOUCH_DATA (TSI0->DATA & 0xFFFF)//macro for extracting the count from data register
-#define TOUCH_THRESHOLD (80)
 volatile int slider_flag;
 
 //************************************************Global Variables*********************************************

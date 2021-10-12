@@ -14,11 +14,14 @@
  *
  *
  *    File name   : state_machine.c
- *    Description : This file Initialized the Slider and is called to read the value of the sliders
+ *    Description : This file runs the state machine in infinite loop.
+ *    It also takes care of external slider and button event to change the state to crosswalk
+ *
  *
  *    Author: TAHER S UJJAINWALA
  * 	  Tools : MCUXpressor IDE
- * 	  Reference: Alexander Dean
+ * 	  Reference: Alexander Dean State Machine Implementation Section, Crafted Ideas with Gaurang Rane
+ * 	  Help from Mukta to get the transition working correctly
  *
  *    Date  : 10/10/2021
  *
@@ -97,7 +100,7 @@ void stop_state()
   			g_initial_blue = stop_blue;
   			g_final_blue = crosswalk_blue;
   			touch_event = 0;
-  			LOG("Slider Touched - Transition from STOP to CROSSWALK \n\r");
+  			LOG("Slider Touched - Transition from STOP to CROSSWALK -->System Time = %d msec\n\r", now()*10);
   			transition();
   		}
 
@@ -111,7 +114,7 @@ void stop_state()
   			g_final_green = go_green;
   			g_initial_blue = stop_blue;
   			g_final_blue = go_blue;
-  			LOG("Transition from STOP to GO state\n\r");
+  			LOG("Transition from STOP to GO state  --> System Time = %d msec\n\r", now()*10);
   			transition();
   		}
 
@@ -160,7 +163,7 @@ void go_state()
   			g_initial_blue = go_blue;
   			g_final_blue = crosswalk_blue;
   			touch_event = 0;
-  			LOG("Slider Touched - Transition from GO to CROSSWALK \n\r");
+  			LOG("Slider Touched - Transition from GO to CROSSWALK --> System Time = %d msec \n\r", now()*10);
   			transition();
   		}
 
@@ -174,7 +177,7 @@ void go_state()
   			g_final_green = warning_green;
   			g_initial_blue = go_blue;
   			g_final_blue = warning_blue;
-  			LOG("Transition from GO to WARNING state\n\r");
+  			LOG("Transition from GO to WARNING state --> System Time = %d msec \n\r", now()*10);
   			transition();
 		}
 
@@ -190,22 +193,22 @@ void warning_state()
 
 	if(reset_timer_flag ==0)
 	{
-		reset_timer();
+		reset_timer();								//Resets the timer
 	}
 
 	reset_timer_flag = 1;
 
-  	float time = get_timer();
+  	float time = get_timer();						//Gets the time value
 
-  	if (time <= warning_timeout)
+  	if (time <= warning_timeout)					//Checks the Warning state timeout
   	{
   		set_RGB_LED(warning_red, warning_green, warning_blue);
 
-  		if ((int)time%5 == 0)
+  		if ((int)time%5 == 0)						//This loops runs every 50ms - Checks the Touch and Button event
   		{
   			touch_val = Touch_Scan_LH();
   			button_event = check_switch_pressed();
-  			if (touch_val == 1 || button_event == 1)
+  			if (touch_val == 1 || button_event == 1)		//Touch Event detection check
   				touch_event = 1;
   		}
 
@@ -213,9 +216,9 @@ void warning_state()
 
   		time = get_timer();
 
-  		if (touch_event == 1)
+  		if (touch_event == 1)			//If event is detected change the initial and final color values and change the state
   		{
-  			state = 'C';
+  			state = 'C';				//State changes to Crosswalk
   			reset_timer_flag = 0;
   			g_initial_red = warning_red;
   			g_final_red = crosswalk_red;
@@ -224,11 +227,11 @@ void warning_state()
   			g_initial_blue = warning_blue;
   			g_final_blue = crosswalk_blue;
   			touch_event = 0;
-  			LOG("Slider Touched - Transition from WARNING to CROSSWALK \n\r");
+  			LOG("Slider Touched - Transition from WARNING to CROSSWALK --> System Time = %d msec\n\r", now()*10);
   			transition();
   		}
 
-  		else if (time > warning_timeout)
+  		else if (time > warning_timeout)		//If Warning timeout is elapsed, changes the state to Stop state
   		{
   			state = 'S';
   			reset_timer_flag = 0;
@@ -238,53 +241,46 @@ void warning_state()
   			g_final_green = stop_green;
   			g_initial_blue = warning_blue;
   			g_final_blue = stop_blue;
-  			LOG("Transition from WARNING to STOP state\n\r");
+  			LOG("Transition from WARNING to STOP state --> System Time = %d msec \n\r", now()*10);
   			transition();
   		}
 
-  		else if (time <= warning_timeout)
+  		else if (time <= warning_timeout)		//If Warning timeout is not elapsed, continue to be in Warning state
   			state ='W';
   	}
 
-	//PRINTF("Entered WARNING STATE\n\r");
 
-
-
-
+//Crosswalk State Function
 void crosswalk_state()
 {
 
 	if(reset_timer_flag ==0)
 	{
-		reset_timer();
+		reset_timer();						//Resets the timer
 		on_off_cycle = 0;
 		count_loop = 0;
-		//PRINTF("Inside the RESET LOOP in CROSSWALK\n\r");
 	}
 
-	//reset_timer();
 	reset_timer_flag = 1;
 
-  	float time = get_timer();
+  	float time = get_timer();				//Gets the time value
 
-  	if (time <= crosswalk_timeout)
+  	if (time <= crosswalk_timeout)			//Checks the Crosswalk state timeout
   	{
-  		on_off_cycle = time - (count_loop * 100);
+  		on_off_cycle = time - (count_loop * 100);		//Code reference to run in 750ms and 250ms taken from Gaurang Rane
 
-  		if (on_off_cycle <= delay_250ms)
-  			set_RGB_LED(led_off, led_off, led_off);
-
-  		if((on_off_cycle <= delay_750ms) && (on_off_cycle >delay_250ms))
+  		if (on_off_cycle <= delay_750ms)				//Generates 750ms ON cycle
   			set_RGB_LED(crosswalk_red, crosswalk_green, crosswalk_blue);
 
-  		if (on_off_cycle >= delay_750ms)
+  		if((on_off_cycle <= delay_1000ms) && (on_off_cycle >delay_750ms))			//Generated remaining 250ms OFF cycle
+  			set_RGB_LED(led_off, led_off, led_off);
+
+  		if (on_off_cycle >= delay_1000ms)
   			count_loop++;
   	}
 
 
-
-  		//time = get_timer();
-  		if (time > crosswalk_timeout)
+  		if (time > crosswalk_timeout)		//If Crosswalk timeout is elapsed, changes the state to Go state
   		{
   			state = 'G';
   			reset_timer_flag = 0;
@@ -294,53 +290,52 @@ void crosswalk_state()
   			g_final_green = go_green;
   			g_initial_blue = crosswalk_blue;
   			g_final_blue = go_blue;
-  			//reset_timer();
-  			LOG("Transition from CROSSWALK to GO state\n\r");
+  			LOG("Transition from CROSSWALK to GO state  --> System Time = %d msec\n\r", now()*10);
   			transition();
   		}
 
-  		else if (time <= crosswalk_timeout)
+  		else if (time <= crosswalk_timeout)		//If Crosswalk timeout is not elapsed, continue to be in Crosswalk state
   			state = 'C';
   	}
 
-	//PRINTF("Entered CROSSWALK STATE\n\r");
 
-
-
+//Transition State Function
 void transition()
 {
-	int final_red,final_green, final_blue;
+	float final_red,final_green, final_blue;
 
 	if(reset_timer_flag ==0)
 	{
-		reset_timer();
+		reset_timer();							//Resets the timer
 	}
 
 	reset_timer_flag = 1;
 
-  	float time = get_timer();
-  	float prev_time= get_timer();
+  	float time = get_timer();					//Gets the time value
+  	float prev_time= get_timer();				//Gets the time value
 
 
-	while(time<= transition_timeout) //TRANSITION OVER 1 SECOND DELAY POLL EVERY 10MS
+	while(time<= transition_timeout) 			//Checks the Transition state timeout
 	{
-		if(time - prev_time > 6.3)
+		if(time - prev_time > smooth_trans)		//Transition every 63ms
 		{
 			prev_time = time;
-			final_red = (g_initial_red - g_final_red)*(int)time/100+g_initial_red;
-			final_green = (g_initial_green - g_final_green)*(int)time/100+g_initial_green;
-			final_blue = (g_initial_blue - g_final_blue)*(int)time/100+g_initial_blue;
-			//SET CURRENT COLOUR BY SETTING PROPER DUTY CYCLES
+
+			//Calculate the final color based on initial and final RGB values for PWM
+			final_red = (g_initial_red - g_final_red)*(time/100)+(g_initial_red);
+			final_green = (g_initial_green - g_final_green)* (time/100)+ (g_initial_green);
+			final_blue = (g_initial_blue - g_final_blue)*(time/100) + (g_initial_blue);
+
+			//Set the transition color as calculated
 			set_RGB_LED(final_red, final_green, final_blue);
 		}
-		//PRINTF("Transition state\n\r");
-		time = get_timer();
+
+		time = get_timer();						//Gets the time value
 	}
 
-	if (time > transition_timeout)
+	if (time > transition_timeout)				//If Transition timeout is elapsed, changes the state
 	{
 		reset_timer_flag = 0;
-		//PRINTF("TRANSITION 1s \n\r");
 	}
 
 
