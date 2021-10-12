@@ -45,6 +45,8 @@
 #define crosswalk_blue	(48)
 #define led_off			(0)
 
+#define delay_750ms     (100)
+#define delay_250ms 	(25)
 
 #ifdef DEBUG
 #define stop_timeout		(500)/*stop state total time*/

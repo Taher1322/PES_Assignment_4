@@ -270,13 +270,13 @@ void crosswalk_state()
   	{
   		on_off_cycle = time - (count_loop * 100);
 
-  		if (on_off_cycle <= 25)
+  		if (on_off_cycle <= delay_250ms)
   			set_RGB_LED(led_off, led_off, led_off);
 
-  		if((on_off_cycle <=100) && (on_off_cycle >25))
+  		if((on_off_cycle <= delay_750ms) && (on_off_cycle >delay_250ms))
   			set_RGB_LED(crosswalk_red, crosswalk_green, crosswalk_blue);
 
-  		if (on_off_cycle >= 100)
+  		if (on_off_cycle >= delay_750ms)
   			count_loop++;
   	}
 
