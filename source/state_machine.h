@@ -49,34 +49,116 @@
 #define delay_250ms 	(25)
 
 #ifdef DEBUG
-#define stop_timeout		(500)/*stop state total time*/
+#define stop_timeout			(500)    //Stop state timeout in DEBUG mode -->5 seconds
 #else
-#define stop_timeout		(2000)/*stop state total time*/
+#define stop_timeout			(2000)	//Stop state timeout in PRODUCTION mode -->20 seconds
 #endif
 
 
 #ifdef DEBUG
-#define go_timeout		(500)/*go state total time*/
+#define go_timeout				(500)	//Go state timeout in DEBUG mode -->5 seconds
 #else
-#define go_timeout		(2000)/*go state total time*/
+#define go_timeout				(2000) 	//Go state timeout in PRODUCTION mode -->20 seconds
 #endif
 
 #ifdef DEBUG
-#define warning_timeout		(300)/*warning state total time*/
+#define warning_timeout			(300)	//Warning state timeout in DEBUG mode -->3 seconds
 #else
-#define warning_timeout		(500)/*warning state total time*/
+#define warning_timeout			(500)	//Warning state timeout in PRODUCTION mode -->5 seconds
 #endif
 
 
-#define transition_timeout		(100)/*transition state total time*/
-#define crosswalk_timeout		(1000)/*crosstalk state total time*/
+#define transition_timeout		(100)	//Transition state timeout in DEBUG mode -->1 seconds
+#define crosswalk_timeout		(1000)	//Crosswalk state timeout in PRODUCTION mode -->10 seconds
 
 
+/*************************************************************************************************************
+ *
+ * Name :		  	void stop_state()
+ *
+ *
+ *
+ * Description :	This function switches the RGB led as per Stop State
+ * It also checks the Touch event and Button event using Systick to change the state
+ * It runs for 5 seconds in DEBUG mode and 20 seconds in PRODUCTION mode
+ *
+ *
+ * Inputs: NONE
+ *
+ * Return: NONE
+ *************************************************************************************************************/
 
 void stop_state();
+
+
+/*************************************************************************************************************
+ *
+ * Name :		  	void go_state()
+ *
+ *
+ *
+ * Description :	This function switches the RGB led as per Go State
+ * It also checks the Touch event and Button event using Systick to change the state
+ * It runs for 5 seconds in DEBUG mode and 20 seconds in PRODUCTION mode
+ *
+ *
+ * Inputs: NONE
+ *
+ * Return: NONE
+ *************************************************************************************************************/
+
 void go_state();
+
+/*************************************************************************************************************
+ *
+ * Name :		  	void warning_state()
+ *
+ *
+ *
+ * Description :	This function switches the RGB led as per Warning State
+ * It also checks the Touch event and Button event using Systick to change the state
+ * It runs for 3 seconds in DEBUG mode and 5 seconds in PRODUCTION mode
+ *
+ *
+ * Inputs: NONE
+ *
+ * Return: NONE
+ *************************************************************************************************************/
+
 void warning_state();
+
+/*************************************************************************************************************
+ *
+ * Name :		  	void crosswalk_state()
+ *
+ *
+ *
+ * Description :	This function switches the RGB led as per Crosswalk State
+ * It is called when there is Slider Touch event or Button event
+ * It runs for 10 seconds in DEBUG and PRODUCTION mode
+ *
+ *
+ * Inputs: NONE
+ *
+ * Return: NONE
+ *************************************************************************************************************/
 void crosswalk_state();
+
+/*************************************************************************************************************
+ *
+ * Name :		  	void transition()
+ *
+ *
+ *
+ * Description :	This function switches the RGB led as per initial and final values based on every state
+ * It changes the color smoothly in every 63ms until 1000ms to complete the color transition of RGB led
+ * It runs for 1 seconds in DEBUG and PRODUCTION mode
+ *
+ *
+ * Inputs: NONE
+ *
+ * Return: NONE
+ *************************************************************************************************************/
 void transition();
 
 #endif /* STATE_MACHINE_H_ */

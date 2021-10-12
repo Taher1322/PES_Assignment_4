@@ -38,16 +38,18 @@
 #include "state_machine.h"
 #include "Timer.h"
 #include "log.h"
+#include "button_int.h"
 
 
-extern char state;
-int touch_val;
-int reset_timer_flag;
-int on_off_cycle;
-int count_loop;
-int touch_event;
+extern char state;				//Stores the current state as character
+int touch_val;					//Used to store the returned values from Touch Event Slider
+int reset_timer_flag;			//Used for state transition and Resetting timer
+int on_off_cycle;				//Used to calculate on and off time in Crosswalk state
+int count_loop;					//Used to calculate on and off time in Crosswalk state
+int touch_event;				//Changes the touch event flag if touch event is detected
+int button_event;				//Changes the flag if button is pressed
 
-
+//Used to store the Initial and Final PWM values for every transition
 int g_initial_red;
 int g_final_red;
 int g_initial_green;
@@ -56,36 +58,37 @@ int g_initial_blue;
 int g_final_blue;
 
 
-
+//Stop State Function
 void stop_state()
 {
 
 	if(reset_timer_flag ==0)
 	{
-		reset_timer();
+		reset_timer();					//Resets the timer
 	}
 
 	reset_timer_flag = 1;
 
-  	float time = get_timer();
+  	float time = get_timer();			//Gets the time value
 
-  	if (time <= stop_timeout)
+  	if (time <= stop_timeout)			//Checks the Stop state timeout
   	{
   		set_RGB_LED(stop_red, stop_green, stop_blue);
 
-  		if ((int)time%5 == 0)
+  		if ((int)time%5 == 0)			//This loops runs every 50ms - Checks the Touch and Button event
   		{
   			touch_val = Touch_Scan_LH();
-  			if (touch_val == 1)
-  				touch_event = 1;
+  			button_event = check_switch_pressed();
+  			if (touch_val == 1 || button_event == 1)					//Touch Event detection check
+  				touch_event = 1;										//Sets the flag to 1
   		}
   	}
 
   		time = get_timer();
 
-  		if (touch_event == 1)
+  		if (touch_event == 1)			//If event is detected change the initial and final color values and change the state
   		{
-  			state = 'C';
+  			state = 'C';						//State changes to Crosswalk
   			reset_timer_flag = 0;
   			g_initial_red = stop_red;
   			g_final_red = crosswalk_red;
@@ -98,7 +101,7 @@ void stop_state()
   			transition();
   		}
 
-  		else if (time > stop_timeout)
+  		else if (time > stop_timeout)		//If Stop timeout is elapsed, changes the state to Go state
   		{
   			state = 'G';
   			reset_timer_flag = 0;
@@ -112,33 +115,33 @@ void stop_state()
   			transition();
   		}
 
-  		else if (time <= stop_timeout)
+  		else if (time <= stop_timeout)	//If Stop timeout is not elapsed, continue to be in Stop state
   			state = 'S';
   	}
 
-	//PRINTF("Entered STOP STATE\n\r");
 
-
+//GO State Function
 void go_state()
 {
 
 	if(reset_timer_flag ==0)
 	{
-		reset_timer();
+		reset_timer();						//Resets the timer
 	}
 
 	reset_timer_flag = 1;
 
-  	float time = get_timer();
+  	float time = get_timer();				//Gets the time value
 
-  	if (time <= go_timeout)
+  	if (time <= go_timeout)					//Checks the Go state timeout
   	{
   		set_RGB_LED(go_red, go_green, go_blue);
 
-  		if ((int)time%5 == 0)
+  		if ((int)time%5 == 0)				//This loops runs every 50ms - Checks the Touch and Button event
   		{
   			touch_val = Touch_Scan_LH();
-  			if (touch_val == 1)
+  			button_event = check_switch_pressed();
+  			if (touch_val == 1 || button_event == 1)			//Touch Event detection check
   				touch_event = 1;
   		}
 
@@ -146,9 +149,9 @@ void go_state()
 
   		time = get_timer();
 
-  		if (touch_event == 1)
+  		if (touch_event == 1)			//If event is detected change the initial and final color values and change the state
   		{
-  			state = 'C';
+  			state = 'C';				//State changes to Crosswalk
   			reset_timer_flag = 0;
   			g_initial_red = go_red;
   			g_final_red = crosswalk_red;
@@ -161,7 +164,7 @@ void go_state()
   			transition();
   		}
 
-  		else if (time > go_timeout)
+  		else if (time > go_timeout)		//If Go timeout is elapsed, changes the state to Warning state
 		{
   			state = 'W';
   			reset_timer_flag = 0;
@@ -175,16 +178,13 @@ void go_state()
   			transition();
 		}
 
-  		else if (time <= go_timeout)
+  		else if (time <= go_timeout)	//If Go timeout is not elapsed, continue to be in Go state
   			state = 'G';
 
   	}
 
-	//PRINTF("Entered GO STATE\n\r");
 
-
-
-
+//WARNING State Function
 void warning_state()
 {
 
@@ -204,7 +204,8 @@ void warning_state()
   		if ((int)time%5 == 0)
   		{
   			touch_val = Touch_Scan_LH();
-  			if (touch_val == 1)
+  			button_event = check_switch_pressed();
+  			if (touch_val == 1 || button_event == 1)
   				touch_event = 1;
   		}
 

@@ -19,7 +19,8 @@ source/state_machine.o source/state_machine.d: ../source/state_machine.c \
  C:\Users\ujjai\Documents\MCUXpressoIDE_11.2.0_4120\workspace\Assignment4_Buffahiti\CMSIS/MKL25Z4.h \
  C:\Users\ujjai\Documents\MCUXpressoIDE_11.2.0_4120\workspace\Assignment4_Buffahiti\utilities/fsl_debug_console.h \
  ../source/TSI.h ../source/led.h ../source/pwm.h \
- ../source/state_machine.h ../source/Timer.h ../source/log.h
+ ../source/state_machine.h ../source/Timer.h ../source/log.h \
+ ../source/button_int.h
 
 C:\Users\ujjai\Documents\MCUXpressoIDE_11.2.0_4120\workspace\Assignment4_Buffahiti\board/board.h:
 
@@ -70,3 +71,5 @@ C:\Users\ujjai\Documents\MCUXpressoIDE_11.2.0_4120\workspace\Assignment4_Buffahi
 ../source/Timer.h:
 
 ../source/log.h:
+
+../source/button_int.h:
